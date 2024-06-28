@@ -59,8 +59,16 @@ public class PeopleService {
     }
 
     @Transactional
-    public void delete(Long id) {
-        peopleRepository.deleteById(id);
+    public void softDeletePerson(Long id) {
+        Person person = peopleRepository.findById(id).orElseThrow();
+        person.setRemoved(true);
+        person.setRemovedAt(LocalDateTime.now());
+        peopleRepository.save(person);
+    }
+
+    @Transactional
+    public List<Person> getDeletedPeople() {
+        return peopleRepository.findByRemovedTrue();
     }
 
     public PersonDTO convertFromPersonToPersonDTO(Person person) {

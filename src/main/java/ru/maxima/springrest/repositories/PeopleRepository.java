@@ -10,6 +10,9 @@ import java.util.Optional;
 
 @Repository
 public interface PeopleRepository extends JpaRepository<Person, Long> {
+
+    List<Person> findByRemovedTrue();
+
     Optional<Person> findByName(String name);
 
     Person findByEmail (String email);
@@ -25,6 +28,4 @@ public interface PeopleRepository extends JpaRepository<Person, Long> {
     List<Person> findPeopleByNameOrEmail(String name, String email);
 
     List<Person> findPeopleByEmailOrderByAgeDesc(String email);
-
-
 }
