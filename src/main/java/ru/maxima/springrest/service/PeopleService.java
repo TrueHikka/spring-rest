@@ -3,6 +3,7 @@ package ru.maxima.springrest.service;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.maxima.springrest.dto.PersonDTO;
 import ru.maxima.springrest.exceptions.PersonNotFoundException;
@@ -20,13 +21,15 @@ public class PeopleService {
     private final PeopleRepository peopleRepository;
     private final ModelMapper mapper;
     private final JWTUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public PeopleService(PeopleRepository peopleRepository, ModelMapper mapper, JWTUtil jwtUtil) {
+    public PeopleService(PeopleRepository peopleRepository, ModelMapper mapper, JWTUtil jwtUtil, PasswordEncoder passwordEncoder) {
         this.peopleRepository = peopleRepository;
         this.mapper = mapper;
         this.jwtUtil = jwtUtil;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -106,6 +109,7 @@ public class PeopleService {
         person.setCreatedAt(LocalDateTime.now());
         person.setCreatedBy("ADMIN");
         person.setRole("ROLE_USER");
+        person.setPassword(passwordEncoder.encode(person.getPassword()));
         person.setRemoved(false);
     }
 }

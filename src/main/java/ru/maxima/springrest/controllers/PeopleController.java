@@ -16,10 +16,8 @@ import ru.maxima.springrest.exceptions.PersonNotFoundException;
 import ru.maxima.springrest.models.Person;
 import ru.maxima.springrest.service.PeopleService;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/people")
@@ -90,7 +88,7 @@ public class PeopleController{
     public ResponseEntity<List<PersonDTO>> getDeletedPeople() {
         List<Person> deletedPeople = peopleService.getDeletedPeople();
         List<PersonDTO> personDTOList = deletedPeople.stream()
-                .map(person -> new PersonDTO(person.getName(), person.getAge(), person.getEmail()))
+                .map(person -> new PersonDTO(person.getName(), person.getAge(), person.getEmail(), person.getPassword()))
                 .toList();
         return ResponseEntity.ok(personDTOList);
     }
